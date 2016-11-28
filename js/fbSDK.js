@@ -43,3 +43,8 @@ function statusChangeCallback(response) {
             'into Facebook.';
     }
 }
+
+FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+    console.log(response);
+});
