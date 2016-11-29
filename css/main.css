@@ -16,6 +16,10 @@ html {
     line-height: 1.4;
 }
 
+body{
+    overflow: hidden;
+}
+
 /*
  * Remove text-shadow in selection highlight:
  * https://twitter.com/miketaylr/status/12228805301
@@ -95,11 +99,50 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
+.center {
+    position: fixed;
+    width: 100px;
+    height: 50px;
+    top: 40%;
+    left: 43%;
+    margin-left: -50px; /* margin is -0.5 * dimension */
+    margin-top: -25px;
+    font-size: 800%;
+    font-family: "Times New Roman";
+    font-weight: bolder;
+    color: darkturquoise;
+}
+
+.centersub {
+    position: fixed;
+    height: 30px;
+    top: 60%;
+    font-weight: 900;
+    left: 28%;
+    margin-top: -25px;
+    font-size: 215%;
+    color: cornsilk;
+    font-family: "Times New Roman"
+}​
 
 
-
-
-
+ #bg {
+     position: fixed;
+     top: -50%;
+     left: -50%;
+     width: 200%;
+     height: 200%;
+ }
+#bg img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    min-width: 50%;
+    min-height: 50%;
+}
 
 
 
