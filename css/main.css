@@ -103,7 +103,7 @@ textarea {
     position: fixed;
     width: 100px;
     height: 50px;
-    top: 40%;
+    top: 30%;
     left: 43%;
     margin-left: -50px; /* margin is -0.5 * dimension */
     margin-top: -25px;
@@ -116,7 +116,7 @@ textarea {
 .centersub {
     position: fixed;
     height: 30px;
-    top: 60%;
+    top: 50%;
     font-weight: 900;
     left: 28%;
     margin-top: -25px;
@@ -124,6 +124,14 @@ textarea {
     color: cornsilk;
     font-family: "Times New Roman"
 }​
+
+ .centerfb{
+     position: fixed;
+     height: 30px;
+     top: 60%;
+     left: 46%;
+     margin-top: -25px;
+ }​
 
 
  #bg {
