@@ -42,7 +42,45 @@
     margin-left: 0px !important;
   }
 
-  #mapid { height: 180px; }
+  #mapid { height: 300px; }
+
+  .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+
+  /* Modal Content/Box */
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+  }
+
+  /* The Close Button */
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
   </style>
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
@@ -71,54 +109,113 @@
   <!-- Main jumbotron for a primary marketing message or call to action -->
   <div id="mapid"></div>
 
-  <div class="container">
-    <!-- Example row of columns -->
-    <div class="row">
-      <div class="col-md-4">
-        <h2>Heading</h2>
-        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-        <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
-      </div>
-      <div class="col-md-4">
-        <h2>Heading</h2>
-        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-        <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
-      </div>
-      <div class="col-md-4">
-        <h2>Heading</h2>
-        <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-        <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
-      </div>
+  <!-- Trigger/Open The Modal -->
+
+
+  <!-- The Modal -->
+  <div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="close">x</span>
+      <p>Some text in the Modal..</p>
     </div>
 
-    <hr>
+  </div>
 
-    <footer>
-      <p>© 2016 Company, Inc.</p>
-    </footer>
-  </div> <!-- /container -->
+  <hr>
 
-
-  <!-- Bootstrap core JavaScript
-  ================================================== -->
-  <!-- Placed at the end of the document so the pages load faster -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-  <script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
-  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-  <script src="http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
-
-  <script>
-  var mymap = L.map('mapid').setView([51.505, -0.09], 13);
-  var sizeOfMap = $(document).height() - $('.navbar').height();
-  console.log(sizeOfMap);
-  $('#mapid').css("height",sizeOfMap);
+  <footer>
+    <p>© 2016 Colaí, Inc.</p>
+  </footer>
+</div> <!-- /container -->
 
 
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+<script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script>
+var mymap = L.map('mapid').setView([51.505, -0.09], 13);
+var sizeOfMap = $(document).height() - $('.navbar').height();
+$('#mapid').css("height",sizeOfMap);
+
+var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
+var osm = new L.TileLayer(osmUrl, {minZoom: 0, maxZoom: 20, attribution: osmAttrib});
+
+mymap.addLayer(osm);
+
+//Localizar o usuário:
+var localizacao = mymap.locate({setView: true, maxZoom: 16});
+var noIcon = L.icon({
+  iconUrl: 'http://www.enterprise-dashboard.com/img/bullet_ball_glass_blue.png',
+  iconSize:     [0, 0], // size of the icon
+  iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+  popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
+});
+function onLocationFound(e) {
+  console.log(e);
+  var radius = e.accuracy / 2;
+  L.marker(e.latlng,{icon:noIcon}).addTo(mymap)
+  .bindPopup("Você está aqui!").openPopup();
+  L.circle(e.latlng, radius).addTo(mymap);
+}
+mymap.on('locationfound', onLocationFound);
+
+//Adicionando os marcadores:
+L.marker([-19.94995329881199,-43.99436473846436]).addTo(mymap).bindPopup(criaEvento("Rolézinho no cemitério", "Rolézinho pra conhecer o cemitério 'Parque da Colina', onde pretendo enterrar alguns amigos."));
+L.marker([-19.93915188421258,-44.003264307975776]).addTo(mymap).bindPopup(criaEvento("Conhecer o Metrô", "Vamos andar pelo metrô de Belo Horizonte e se conhecer!"));
+
+//Criando o evento
+mymap.on('click', function(e) {
+  var popLocation= e.latlng;
+  var popup = L.popup()
+  .setLatLng(popLocation)
+  .setContent('<p>Hello world!<br />This is a nice popup.</p>')
+  .openOn(mymap);
+  console.log(e.latlng);
+});
+
+function criaEvento(titulo, descricao){
+  return "<h3>" + titulo + "</h3><p><strong>Descrição: </strong>" + descricao +
+  "<br /> <strong>Participantes: </strong>"  + (Math.floor(Math.random() * 6) + 1) +
+  "<br /> <strong>Data:</strong> 12/04/2017 (12:34)</p>" +
+  "<center><button id=\"myBtn\" type=\"button\" class=\"btn btn-success\">Participar</button></center>";
+}
+
+$( document ).ready(function() {
+  console.log( "ready!" );
+
+  // Get the modal
+  var modal = document.getElementById('myModal');
+
+  // Get the button that opens the modal
+  var btn = document.getElementById("myBtn");
+
+  // Get the <span> element that closes the modal
+  var span = document.getElementsByClassName("close")[0];
+
+  // When the user clicks on the button, open the modal
+  btn.onclick = function() {
+    modal.style.display = "block";
+  }
+
+  // When the user clicks on <span> (x), close the modal
+  span.onclick = function() {
+    modal.style.display = "none";
+  }
+
+});
+</script>
 
 
-
-
-  </script>
 
 </body></html>
